@@ -1,7 +1,8 @@
 # hackertron-eu-wasm-game-project
 Source code of Rust/WASM game development dev blog (http://www.hackertron.eu)
 
-# Current WebAssembly build (http://www.hackertron.eu/build/)
+# Current WebAssembly build 
+http://www.hackertron.eu/build/
 
 # WebAssembly Build Instruction/Requirements
 
