@@ -1,8 +1,14 @@
 /target/
 /design/
-/template/
+/target/
+
+/template/game.d
+/template/game.js
+/template/game.data
+/template/game.wasm
+/template/assets/
+
+Cargo.lock
 .DS_Store
 **/*.rs.bk
-Cargo.lock
-/target/
 **/*.rs.bk
