@@ -1,0 +1,20 @@
+[package]
+name = "web-game"
+version = "0.1.0"
+authors = ["schr3da <strieder.georg.dev@gmail.com>"]
+
+[[bin]]
+name = "game"
+path = "src/main.rs"
+
+[dependencies.sdl2]
+version = "0.30"
+default-features = false
+features = ["image", "ttf"]
+
+[dependencies.sdl2-sys]
+version = "0.30"
+
+[dependencies]
+rand = "0.3"
+num = "0.1.40"

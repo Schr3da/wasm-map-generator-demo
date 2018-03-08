@@ -1,0 +1,5 @@
+[target.wasm32-unknown-emscripten]
+linker = "/ABSOLUTE_PATH/hackertron-eu-wasm-game-project/build_web"
+
+[target.asmjs-unknown-emscripten]
+linker = "/ABSOLUTE_PATH/hackertron-eu-wasm-game-project/build_web"
