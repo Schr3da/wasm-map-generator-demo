@@ -1,7 +1,7 @@
 use sdl2::rect::{Rect};
 use sdl2::pixels::{Color};
 use std::boxed::{Box};
-use constants::{tile, map};
+use constants::{map};
 use entities::unit::{Unit};
 use scenes::layer::{Layer, Renderable};
 
@@ -20,16 +20,11 @@ pub fn create_default_units_for_layer(layer: &mut Layer,  gx: i32, gy: i32) {
 pub fn create_default_unit_at_position(x: i32, y: i32) -> Box<Unit>{
     Box::new(
         Unit::new(
-            Rect::new(
-                x,
-                y,
-                tile::WIDTH,
-                tile::HEIGHT
-            ),
+            Rect::new(x, y, 1, 1),
             Color::RGBA(0, 0, 0, 0),
             Color::RGBA(0, 0, 0, 0),
             "-",
-            tile::FONT_SIZE
+            1
         )
     )
 }

@@ -1,7 +1,7 @@
 use sdl2::rect::{Rect};
 use std::collections::{HashMap};
 use scenes::layer::{Layer, Renderable};
-use constants::{layers, tile, map, window};
+use constants::{layers};
 use generator::{utils};
 
 pub struct Map {
@@ -10,10 +10,10 @@ pub struct Map {
 
 impl Map {
 
-    pub fn new() -> Map {
-        Map {
-            layers: HashMap::new()
-        }
+    pub fn new() -> Self {
+        let mut map = Map {layers: HashMap::new()};
+        map.generate();
+        map
     }
 
     pub fn generate(&mut self) {
@@ -24,7 +24,7 @@ impl Map {
 
         for e in layer.get_mut_entities().iter_mut() {
             let (x, y) = e.get_position();
-            e.set_position(x * tile::WIDTH as i32, y * tile::HEIGHT as i32);
+            e.set_position(x, y);
             e.set_background(utils::get_tile_color(&height_map, x, y));
         }
 
@@ -38,9 +38,4 @@ impl Map {
     pub fn get_frame(&self) -> Rect {
         self.layers[layers::MAP].get_frame()
     }
-
-    pub fn get_mini_map_frame(&self) -> Rect {
-        Rect::new(window::WIDTH as i32 - map::MINI_MAP_SIZE as i32, 0,  map::MINI_MAP_SIZE, map::MINI_MAP_SIZE)
-    }
-
 }

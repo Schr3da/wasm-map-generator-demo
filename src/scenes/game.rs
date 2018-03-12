@@ -6,11 +6,13 @@ use entities::unit::{Unit};
 use entities::utils::{create_default_unit_at_position};
 use scenes::layer::{Layer};
 use generator::map::{Map};
-use constants::{tile};
+use ui::minimap::{Minimap};
 
 pub struct Game {
     map: Map,
-    player: Box<Unit>
+    minimap: Minimap,
+    player: Box<Unit>,
+    position_frame: Rect,
 }
 
 impl Game {
@@ -18,16 +20,23 @@ impl Game {
     pub fn new() -> Game {
         Game {
             map: Map::new(),
+            minimap: Minimap::new(),
             player: create_default_unit_at_position(0,0),
-        }
-    }
-
-    pub fn init(&mut self) {
-        self.map.generate();
+            position_frame: Rect::new(0,0,0,0)
+         }
     }
 
     pub fn get_map_layers(&self) -> &HashMap<String, Layer> {
         &self.map.get_layers()
+    }
+
+    pub fn set_position_frame(&mut self, frame: Rect) {
+        self.position_frame = frame;
+        self.set_player_position(frame.x(), frame.y());
+    }
+
+    pub fn get_position_frame(&self) -> Rect {
+        self.position_frame
     }
 
     pub fn set_player_position(&mut self, x: i32, y: i32) {
@@ -46,10 +55,10 @@ impl Game {
     pub fn get_map_frame(&self) -> Rect {
         let (width, height) = self.get_map_size();
         let (px, py) = self.get_player_position();
-        Rect::new(px, py, width * tile::WIDTH as u32, height * tile::HEIGHT as u32)
+        Rect::new(px, py, width, height)
     }
 
     pub fn get_mini_map_frame(&self) -> Rect {
-        self.map.get_mini_map_frame()
+        self.minimap.get_frame()
     }
 }

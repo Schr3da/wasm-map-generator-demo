@@ -12,8 +12,11 @@ pub mod scenes;
 pub mod light;
 pub mod input;
 pub mod generator;
+pub mod renderer;
 pub mod loader;
+pub mod ui;
 pub mod app;
+
 
 fn main() {
     app::run();

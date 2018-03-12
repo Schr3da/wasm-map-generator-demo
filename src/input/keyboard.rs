@@ -4,10 +4,12 @@ use sdl2::{Sdl};
 use sdl2::{EventPump};
 use sdl2::keyboard::{Keycode};
 use sdl2::event::{Event};
+use renderer::renderer::{RenderTarget};
 
 pub struct KeyboardControls{
     events: EventPump,
     keys: HashMap<Keycode, bool>,
+    render_target: RenderTarget,
 }
 
 impl KeyboardControls{
@@ -16,6 +18,7 @@ impl KeyboardControls{
         KeyboardControls{
             events: context.event_pump().unwrap(),
             keys: HashMap::new(),
+            render_target: RenderTarget::TopDown,
         }
     }
 
@@ -34,6 +37,12 @@ impl KeyboardControls{
         }
     }
 
+    pub fn toogle_render_target(&mut self) {
+        match self.render_target {
+            RenderTarget::TopDown => self.render_target = RenderTarget::ThirdPerson,
+            RenderTarget::ThirdPerson => self.render_target = RenderTarget::TopDown,
+        }
+    }
 
     pub fn get_keys(&self) -> &HashMap<Keycode, bool>{
         return &self.keys;
