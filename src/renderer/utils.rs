@@ -11,7 +11,6 @@ pub fn toogle_render_target(current_target: RenderTarget) -> RenderTarget {
 }
 
 pub fn set_initial_position_frame(g: &mut Game) {
-    let frame = g.get_map_frame();
     match renderer::INITAL_RENDERER_TARGET {
         RenderTarget::TopDown => set_top_down_person_initial_position(g),
         RenderTarget::ThirdPerson => set_third_person_initial_position(g),
