@@ -4,3 +4,4 @@ pub mod theme;
 pub mod tile;
 pub mod player;
 pub mod window;
+pub mod renderer;

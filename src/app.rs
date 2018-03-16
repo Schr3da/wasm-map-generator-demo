@@ -1,15 +1,13 @@
 use sdl2;
 use std::{thread};
 use scenes::game::{Game};
-use input;
 use input::keyboard::{KeyboardControls};
 use constants::{window};
 use loader::font::{load_all_fonts};
 use loader::assets::{FontManager};
-use utils::main::{update, renderer};
+use utils::main::{game_loop};
 use utils::canvas::{get_canvas};
-use renderer::utils::{get_initial_position_frame};
-use renderer::renderer::{RenderTarget, Renderer};
+use renderer::renderer::{Renderer};
 
 pub fn run() {
     let sdl_context = sdl2::init().unwrap();
@@ -24,17 +22,9 @@ pub fn run() {
 
     let mut game = Game::new();
     let mut render = Renderer::new(&mut canvas, &texture_creator, &game);
-    let mut frame = get_initial_position_frame(RenderTarget::TopDown, &game);
 
-    renderer(|is_init_done| {
-        if is_init_done && !update(&mut keyboard_controlls) {
-            thread::sleep(window::get_fps());
-            return true;
-        }
-
-        let position_frame = input::utils::get_render_rect_for_keyboard(&keyboard_controlls, &mut frame, &render.get_frame());
-        game.set_position_frame(position_frame);
-
+    game_loop(|| {
+        keyboard_controlls.update(&mut game, &mut render);
         render.draw(&mut canvas, &texture_creator, &game);
         thread::sleep(window::get_fps());
         return true;

@@ -51,8 +51,8 @@ pub fn render_map<T>(game: &Game, canvas: &mut Canvas<T>, px: i32, py: i32) wher
     }
 }
 
-pub fn render_light<T>(game: &Game, canvas: &mut Canvas<T>) where T: RenderTarget {
-    let (px, py) = game.get_player_position();
+pub fn render_light<T>(_game: &Game, canvas: &mut Canvas<T>) where T: RenderTarget {
+    let (px, py) = (0,0); // Todo need to align with player positions
     let light_radius = Circle::new(px + (window::WIDTH as f32 * 0.5) as i32, py + (window::HEIGHT as f32 * 0.5) as i32, player::LIGHT_RADIUS);
     let viewport = Rect::new(0, 0, window::WIDTH / tile::WIDTH + tile::WIDTH, window::HEIGHT / tile::HEIGHT + tile::HEIGHT);
 

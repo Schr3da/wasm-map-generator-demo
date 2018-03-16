@@ -1,22 +1,31 @@
 use sdl2::rect::{Rect};
 use scenes::game::{Game};
 use renderer::renderer::{RenderTarget};
-use constants::{tile};
+use constants::{tile, renderer};
 
-pub fn get_initial_position_frame(target: RenderTarget, g: &Game) -> Rect {
-    let frame = g.get_map_frame();
-    match target {
-        RenderTarget::TopDown => Rect::new(800, 800, frame.width() * tile::WIDTH, frame.height() * tile::HEIGHT),
-        RenderTarget::ThirdPerson => Rect::new(0, 0, frame.width() * tile::WIDTH, frame.height() * tile::HEIGHT),
+pub fn toogle_render_target(current_target: RenderTarget) -> RenderTarget {
+    match current_target {
+        RenderTarget::TopDown => RenderTarget::ThirdPerson,
+        RenderTarget::ThirdPerson => RenderTarget::TopDown,
     }
 }
 
-pub fn get_position_frame(target: RenderTarget, g: &Game) -> Rect {
+pub fn set_initial_position_frame(g: &mut Game) {
     let frame = g.get_map_frame();
-    let (x,y) = g.get_player_position();
-
-    match target {
-        RenderTarget::TopDown => Rect::new(x, y, frame.width() * tile::WIDTH, frame.height() * tile::HEIGHT),
-        RenderTarget::ThirdPerson => Rect::new(x, y, frame.width() * tile::WIDTH, frame.height() * tile::HEIGHT),
+    match renderer::INITAL_RENDERER_TARGET {
+        RenderTarget::TopDown => set_top_down_person_initial_position(g),
+        RenderTarget::ThirdPerson => set_third_person_initial_position(g),
     }
+}
+
+fn set_third_person_initial_position(g: &mut Game) {
+    let frame = g.get_map_frame();
+    let p = Rect::new(0, 0, frame.width() * tile::WIDTH, frame.height() * tile::HEIGHT);
+    g.set_position_frame(p);
+}
+
+fn set_top_down_person_initial_position(g: &mut Game) {
+    let frame = g.get_map_frame();
+    let p = Rect::new(800, 800, frame.width() * tile::WIDTH, frame.height() * tile::HEIGHT);
+    g.set_position_frame(p);
 }

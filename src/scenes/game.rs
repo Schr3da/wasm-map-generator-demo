@@ -5,6 +5,7 @@ use entities::entity::{Entity};
 use entities::unit::{Unit};
 use entities::utils::{create_default_unit_at_position};
 use scenes::layer::{Layer};
+use renderer::utils::{set_initial_position_frame};
 use generator::map::{Map};
 use ui::minimap::{Minimap};
 
@@ -12,18 +13,21 @@ pub struct Game {
     map: Map,
     minimap: Minimap,
     player: Box<Unit>,
-    position_frame: Rect,
+    frame: Rect,
 }
 
 impl Game {
 
     pub fn new() -> Game {
-        Game {
+        let mut game = Game {
             map: Map::new(),
             minimap: Minimap::new(),
             player: create_default_unit_at_position(0,0),
-            position_frame: Rect::new(0,0,0,0)
-         }
+            frame: Rect::new(0,0,0,0)
+        };
+
+        set_initial_position_frame(&mut game);
+        game
     }
 
     pub fn get_map_layers(&self) -> &HashMap<String, Layer> {
@@ -31,12 +35,12 @@ impl Game {
     }
 
     pub fn set_position_frame(&mut self, frame: Rect) {
-        self.position_frame = frame;
+        self.frame = frame;
         self.set_player_position(frame.x(), frame.y());
     }
 
     pub fn get_position_frame(&self) -> Rect {
-        self.position_frame
+        self.frame
     }
 
     pub fn set_player_position(&mut self, x: i32, y: i32) {

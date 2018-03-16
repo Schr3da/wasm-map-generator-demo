@@ -4,6 +4,7 @@ use sdl2::render::{Canvas};
 use sdl2::render::{TextureCreator};
 use sdl2::video::{WindowContext};
 use renderer::top_down::{TopDown};
+use renderer::third_person::{ThirdPerson};
 use utils::texture::{create_texture_target};
 use constants::{window};
 use scenes::game::{Game};
@@ -17,6 +18,7 @@ pub struct Renderer<'a> {
     frame: Rect,
     target: RenderTarget,
     td_renderer: TopDown<'a>,
+    tp_renderer: ThirdPerson,
 }
 
 impl<'a> Renderer<'a> {
@@ -26,6 +28,7 @@ impl<'a> Renderer<'a> {
             frame: Rect::new(0, 0, window::WIDTH, window::HEIGHT),
             target: RenderTarget::TopDown,
             td_renderer: TopDown::new(canvas, t_creator, game),
+            tp_renderer: ThirdPerson::new(canvas, game)
         }
     }
 
@@ -41,7 +44,7 @@ impl<'a> Renderer<'a> {
     }
 
     pub fn get_frame(&self) -> Rect {
-        self.frame
+        Rect::new(self.frame.x(), self.frame.y(), self.frame.width(), self.frame.height())
     }
 
     pub fn draw<'l, T>(&mut self, canvas: &mut Canvas<T>, t_creator: &'a TextureCreator<WindowContext>, game: &Game) where T: sdl2::render::RenderTarget {
@@ -52,8 +55,10 @@ impl<'a> Renderer<'a> {
             texture.clear();
             match self.get_target() {
                 RenderTarget::TopDown => self.td_renderer.draw(texture, game, self.get_frame()),
-                _ => {}
+                RenderTarget::ThirdPerson => self.tp_renderer.draw(texture, game, self.get_frame()),
             }
+
+            texture.copy(&self.td_renderer.get_map(), None, game.get_mini_map_frame()).unwrap();
         }).unwrap();
 
         canvas.copy(&screen, None, window::get_canvas_frame()).unwrap();
