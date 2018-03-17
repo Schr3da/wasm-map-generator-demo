@@ -6,9 +6,6 @@ pub trait Entity {
     fn get_background(&self) -> Color;
     fn set_background(&mut self, c: Color);
 
-    fn get_foreground(&self) -> Color;
-    fn set_foreground(&mut self, c: Color);
-
     fn get_frame(&self) -> Rect;
     fn set_frame(&mut self, f: Rect);
 

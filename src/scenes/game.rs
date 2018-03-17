@@ -2,8 +2,8 @@ use sdl2::rect::{Rect};
 use std::string::{String};
 use std::collections::{HashMap};
 use entities::entity::{Entity};
-use entities::unit::{Unit};
-use entities::utils::{create_default_unit_at_position};
+use entities::player::{Player};
+use entities::utils::{create_player_with_initial_position};
 use scenes::layer::{Layer};
 use renderer::utils::{set_initial_position_frame};
 use generator::map::{Map};
@@ -12,7 +12,7 @@ use ui::minimap::{Minimap};
 pub struct Game {
     map: Map,
     minimap: Minimap,
-    player: Box<Unit>,
+    player: Box<Player>,
     frame: Rect,
 }
 
@@ -22,8 +22,8 @@ impl Game {
         let mut game = Game {
             map: Map::new(),
             minimap: Minimap::new(),
-            player: create_default_unit_at_position(0,0),
-            frame: Rect::new(0,0,0,0)
+            player: create_player_with_initial_position(0, 0),
+            frame: Rect::new(0, 0, 0, 0)
         };
 
         set_initial_position_frame(&mut game);
@@ -41,6 +41,10 @@ impl Game {
 
     pub fn get_position_frame(&self) -> Rect {
         self.frame
+    }
+
+    pub fn get_player(&self) -> &Player {
+        &self.player
     }
 
     pub fn set_player_position(&mut self, x: i32, y: i32) {

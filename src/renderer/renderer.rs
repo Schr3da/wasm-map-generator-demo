@@ -53,6 +53,7 @@ impl<'a> Renderer<'a> {
         canvas.clear();
         canvas.with_texture_canvas(&mut screen, |texture| {
             texture.clear();
+
             match self.get_target() {
                 RenderTarget::TopDown => self.td_renderer.draw(texture, game, self.get_frame()),
                 RenderTarget::ThirdPerson => self.tp_renderer.draw(texture, game, self.get_frame()),

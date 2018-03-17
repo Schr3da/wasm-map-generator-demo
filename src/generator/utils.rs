@@ -6,7 +6,7 @@ use rand::{thread_rng};
 use constants::{map, theme};
 use generator::{diamond_square};
 use scenes::layer::{Layer};
-use entities::utils::{create_default_units_for_layer};
+use entities::utils::{create_default_tiles_for_layer};
 
 pub fn create_height_map() -> diamond_square::PixelMap<u8> {
     let buffer = diamond_square::construct(map::DETAILS);
@@ -15,7 +15,7 @@ pub fn create_height_map() -> diamond_square::PixelMap<u8> {
 
 pub fn create_default_layer(w: u32, h: u32) -> Layer {
     let mut layer = Layer::new(Rect::new(0, 0, w, h));
-    create_default_units_for_layer(&mut layer, w as i32, h as i32);
+    create_default_tiles_for_layer(&mut layer, w as i32, h as i32);
     layer
 }
 

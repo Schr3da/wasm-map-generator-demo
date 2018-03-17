@@ -1,3 +1,4 @@
 pub mod entity;
-pub mod unit;
+pub mod tile;
+pub mod player;
 pub mod utils;
