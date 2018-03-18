@@ -3,7 +3,6 @@ use std::collections::{HashMap};
 use scenes::layer::{Layer, Renderable};
 use constants::{layers};
 use generator::{utils};
-use entities::entity::{Entity};
 use entities::tile::{Tile};
 
 pub struct Map {
@@ -24,11 +23,8 @@ impl Map {
 
         let mut layer = utils::create_default_layer(length, length);
 
-        for e in layer.get_mut_entities().iter_mut() {
-            let (x, y) = e.get_position();
-            e.set_position(x, y);
-            e.set_background(utils::get_tile_color(&height_map, x, y));
-        }
+        utils::create_surface(&mut layer, &height_map);
+        utils::create_vegetation(&mut layer);
 
         self.layers.insert(String::from(layers::MAP), layer);
     }

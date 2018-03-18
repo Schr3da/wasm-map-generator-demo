@@ -4,6 +4,7 @@ use entities::entity::{Entity};
 
 pub struct Tile {
     frame: Rect,
+    is_walkable: bool,
     background_color: Color,
 }
 
@@ -15,9 +16,17 @@ impl Tile {
         Tile {
             frame: Rect::new(f.x(), f.y(), f.width(), f.height()),
             background_color: Color::RGBA(b_r, b_g, b_b, b_a),
+            is_walkable: false,
         }
     }
+    
+    pub fn set_walkable(&mut self, v: bool) {
+        self.is_walkable = v;
+    }
 
+    pub fn is_walkable(&self) -> bool {
+        self.is_walkable
+    }
 }
 
 impl Entity for Tile {

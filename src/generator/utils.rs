@@ -5,9 +5,10 @@ use rand::distributions::{IndependentSample, Range};
 use rand::{thread_rng};
 use constants::{map, theme};
 use generator::{diamond_square};
-use scenes::layer::{Layer};
+use scenes::layer::{Renderable, Layer}; 
 use entities::utils::{create_default_tiles_for_layer};
 use entities::tile::{Tile};
+use entities::entity::{Entity};
 
 pub fn create_height_map() -> diamond_square::PixelMap<u8> {
     let buffer = diamond_square::construct(map::DETAILS);
@@ -20,7 +21,32 @@ pub fn create_default_layer(w: u32, h: u32) -> Layer<Tile> {
     layer
 }
 
-pub fn get_range(v1: u32, v2: u32) -> Range<u32> {
+pub fn create_surface(l: &mut Layer<Tile>, hm: &diamond_square::PixelMap<u8>) {
+    for e in l.get_mut_entities().iter_mut() {
+        let (x, y) = e.get_position();
+        let value = hm.get_pixel(x as u32, y as u32); 
+            
+        e.set_position(x, y);
+        e.set_walkable(is_walkable(value));
+        e.set_background(get_tile_color(value));
+    }
+}
+
+pub fn create_vegetation(l: &mut Layer<Tile>) {
+    let tiles = l.get_mut_entities().iter_mut().filter(|e| e.is_walkable());
+
+    for e in tiles {
+        e.set_background(Color::RGB(0,255,0));
+    }
+}
+
+pub fn get_random_color(colors: &[Color; 3]) -> Color {
+    let range = get_range(0, colors.len() as u32);
+    let mut rng = thread_rng();
+    colors[range.ind_sample(&mut rng) as usize]
+}
+
+fn get_range(v1: u32, v2: u32) -> Range<u32> {
     if v1 == v2 {
         Range::new(v1, v2+2)
     } else {
@@ -31,14 +57,15 @@ pub fn get_range(v1: u32, v2: u32) -> Range<u32> {
     }
 }
 
-pub fn get_random_color(colors: &[Color; 3]) -> Color {
-    let range = get_range(0, colors.len() as u32);
-    let mut rng = thread_rng();
-    colors[range.ind_sample(&mut rng) as usize]
+fn is_walkable(hm_value: u8) -> bool {
+    match hm_value {
+        0...160 => false,
+        _ => true,
+    }
 }
 
-pub fn get_tile_color(hm: &diamond_square::PixelMap<u8>, x: i32, y: i32) -> Color  {
-    match hm.get_pixel(x as u32, y as u32) {
+fn get_tile_color(hm_value: u8) -> Color  {
+    match hm_value {
         0...80 => Color::RGBA(8, 33, 51, 255),
         0...110 => Color::RGBA(18, 63, 102, 255),
         0...120 => Color::RGBA(28, 94, 153, 255),
@@ -53,3 +80,4 @@ pub fn get_tile_color(hm: &diamond_square::PixelMap<u8>, x: i32, y: i32) -> Colo
         _ => theme::get_dark_blue(),
     }
 }
+
