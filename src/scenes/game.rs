@@ -8,6 +8,7 @@ use scenes::layer::{Layer};
 use renderer::utils::{set_initial_position_frame};
 use generator::map::{Map};
 use ui::minimap::{Minimap};
+use entities::tile::{Tile};
 
 pub struct Game {
     map: Map,
@@ -30,7 +31,7 @@ impl Game {
         game
     }
 
-    pub fn get_map_layers(&self) -> &HashMap<String, Layer> {
+    pub fn get_map_layers(&self) -> &HashMap<String, Layer<Tile>> {
         &self.map.get_layers()
     }
 

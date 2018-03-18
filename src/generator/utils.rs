@@ -7,13 +7,14 @@ use constants::{map, theme};
 use generator::{diamond_square};
 use scenes::layer::{Layer};
 use entities::utils::{create_default_tiles_for_layer};
+use entities::tile::{Tile};
 
 pub fn create_height_map() -> diamond_square::PixelMap<u8> {
     let buffer = diamond_square::construct(map::DETAILS);
     diamond_square::normalize_pixel_map(buffer)
 }
 
-pub fn create_default_layer(w: u32, h: u32) -> Layer {
+pub fn create_default_layer(w: u32, h: u32) -> Layer<Tile> {
     let mut layer = Layer::new(Rect::new(0, 0, w, h));
     create_default_tiles_for_layer(&mut layer, w as i32, h as i32);
     layer

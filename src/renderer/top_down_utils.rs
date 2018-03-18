@@ -6,6 +6,7 @@ use light::intensity::{calculate_light_intensity};
 use scenes::game::{Game};
 use scenes::layer::{Renderable};
 use constants::{window, tile, player};
+use entities::entity::{Entity};
 use utils;
 
 pub fn create_map_texture<'l, T>(t_creator: &'l TextureCreator<WindowContext>, game: &Game, canvas: &mut Canvas<T>) -> Texture<'l> where T: RenderTarget {

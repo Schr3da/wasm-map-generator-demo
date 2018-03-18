@@ -3,9 +3,11 @@ use std::collections::{HashMap};
 use scenes::layer::{Layer, Renderable};
 use constants::{layers};
 use generator::{utils};
+use entities::entity::{Entity};
+use entities::tile::{Tile};
 
 pub struct Map {
-    layers: HashMap<String, Layer>,
+    layers: HashMap<String, Layer<Tile>>,
 }
 
 impl Map {
@@ -31,7 +33,7 @@ impl Map {
         self.layers.insert(String::from(layers::MAP), layer);
     }
 
-    pub fn get_layers(&self) -> &HashMap<String, Layer> {
+    pub fn get_layers(&self) -> &HashMap<String, Layer<Tile>> {
         &self.layers
     }
 

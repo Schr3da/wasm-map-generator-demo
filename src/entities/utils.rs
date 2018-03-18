@@ -6,7 +6,7 @@ use entities::tile::{Tile};
 use entities::player::{Player};
 use scenes::layer::{Layer, Renderable};
 
-pub fn create_default_tiles_for_layer(layer: &mut Layer,  gx: i32, gy: i32) {
+pub fn create_default_tiles_for_layer(layer: &mut Layer<Tile>,  gx: i32, gy: i32){
     let ignore = map::IGNORE_BORDER_PIXELS;
     for y in 0..gy {
         for x in 0..gx {
