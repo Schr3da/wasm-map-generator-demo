@@ -2,6 +2,7 @@ use sdl2::pixels::{Color};
 use sdl2::rect::{Rect, Point};
 use entities::entity::{Entity};
 
+#[derive(Clone)]
 pub struct Tile {
     frame: Rect,
     is_walkable: bool,

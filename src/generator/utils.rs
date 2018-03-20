@@ -27,16 +27,29 @@ pub fn create_surface(l: &mut Layer<Tile>, hm: &diamond_square::PixelMap<u8>) {
         let value = hm.get_pixel(x as u32, y as u32); 
             
         e.set_position(x, y);
-        e.set_walkable(is_walkable(value));
+        e.set_walkable(is_initial_walkable(value));
         e.set_background(get_tile_color(value));
     }
 }
 
 pub fn create_vegetation(l: &mut Layer<Tile>) {
-    let tiles = l.get_mut_entities().iter_mut().filter(|e| e.is_walkable());
+    //Initial interested tiles
+    let mut new_tiles: Vec<Box<Tile>> = l.get_entities().iter().filter(|e| e.is_walkable()).cloned().collect(); 
+    
+    new_tiles.iter_mut().for_each(|e| {
+        e.set_background(Color::RGB(0, 255, 0));   
+    });
 
-    for e in tiles {
-        e.set_background(Color::RGB(0,255,0));
+    new_tiles.iter_mut().for_each(|e| {
+        e.set_background(Color::RGB(255, 0, 0));   
+    });
+
+    let to_modify = l.get_mut_entities().iter_mut().filter(|e| e.is_walkable());
+    for (i, e) in to_modify.enumerate() {
+        if e.is_walkable() {
+            e.set_background(new_tiles[i].get_background());
+            e.set_walkable(new_tiles[i].is_walkable());
+        }
     }
 }
 
@@ -57,7 +70,7 @@ fn get_range(v1: u32, v2: u32) -> Range<u32> {
     }
 }
 
-fn is_walkable(hm_value: u8) -> bool {
+fn is_initial_walkable(hm_value: u8) -> bool {
     match hm_value {
         0...160 => false,
         _ => true,
