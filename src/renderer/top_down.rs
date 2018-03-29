@@ -43,7 +43,9 @@ impl<'a> TopDown<'a>{
     }
 
     fn draw_light<T>(&self, canvas: &mut Canvas<T>, game: &Game, screen_frame: Rect) where T: RenderTarget {
-        let projected_frame = get_light_frame(game);
+        let mut projected_frame = get_light_frame(game);
+        projected_frame.set_width(screen_frame.width());
+        projected_frame.set_height(screen_frame.height());
         canvas.copy(&self.light, projected_frame, screen_frame).unwrap();
     }
 }

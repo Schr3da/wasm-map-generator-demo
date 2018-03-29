@@ -38,11 +38,11 @@ pub fn create_vegetation<'a>(l: &'a mut Layer<Tile>) {
         e.is_walkable()
     }).cloned().collect(); 
     
-    new_tiles.iter_mut().for_each(|e| {
+    new_tiles.iter_mut().for_each(|_e| {
 //        e.set_background(Color::RGB(0, 255, 0));   
     });
 
-    new_tiles.iter_mut().for_each(|e| {
+    new_tiles.iter_mut().for_each(|_e| {
 //        e.set_background(Color::RGB(255, 0, 0));   
     });
 

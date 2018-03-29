@@ -1,7 +1,7 @@
 use sdl2::rect::{Rect};
 use scenes::game::{Game};
 use renderer::renderer::{RenderTarget};
-use constants::{tile, renderer};
+use constants::{renderer, map};
 
 pub fn toogle_render_target(current_target: RenderTarget) -> RenderTarget {
     match current_target {
@@ -18,14 +18,23 @@ pub fn set_initial_scroll(g: &mut Game) {
 }
 
 fn set_third_person_initial_scroll(g: &mut Game) {
-    let frame = g.get_map_frame();
-    let p = Rect::new(0, 0, frame.width() * tile::WIDTH, frame.height() * tile::HEIGHT);
+    let (mw, mh) = g.get_map_size();
+    let (px, py) = g.get_player_position();
+    let p = Rect::new(px, py, mw, mh);
     g.set_scroll_frame(p);
 }
 
 fn set_top_down_person_initial_scroll(g: &mut Game) {
-    let frame = g.get_map_frame();
-    let px = (frame.width() as f32 * 0.5) as i32;
-    let py = (frame.height() as f32 * 0.5) as i32;
-    g.set_scroll_frame(Rect::new(px, py, frame.width(), frame.height()));
+    let (mw, mh) = g.get_map_size();
+    let (mut px, mut py) = g.get_player_position();
+    
+    if px == 0 {
+        px = map::IGNORE_BORDER_PIXELS + 1; 
+    }
+
+    if py == 0 {
+        py = map::IGNORE_BORDER_PIXELS + 1;
+    }
+    
+    g.set_scroll_frame(Rect::new(px, py, mw, mh));
 }

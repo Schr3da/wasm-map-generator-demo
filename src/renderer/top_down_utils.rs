@@ -10,10 +10,8 @@ use entities::entity::{Entity};
 use utils;
 
 pub fn create_map_texture<'l, T>(t_creator: &'l TextureCreator<WindowContext>, game: &Game, canvas: &mut Canvas<T>) -> Texture<'l> where T: RenderTarget {
-    let map_frame = game.get_map_frame();
-    let frame = Rect::new(map_frame.x() * tile::WIDTH as i32, map_frame.y() * tile::HEIGHT as i32, map_frame.width() * tile::WIDTH, map_frame.height() * tile::HEIGHT);
-
-    let mut map = utils::texture::create_texture_target(&t_creator, frame.width(), frame.height()).unwrap();
+    let (mw, mh) = game.get_map_size();
+    let mut map = utils::texture::create_texture_target(&t_creator, mw * tile::WIDTH, mh * tile::HEIGHT).unwrap();
     canvas.with_texture_canvas(&mut map, |texture| {
         for (_, layer) in game.get_map_layers().into_iter(){
             for e in layer.get_entities() {
@@ -27,7 +25,7 @@ pub fn create_map_texture<'l, T>(t_creator: &'l TextureCreator<WindowContext>, g
 }
 
 pub fn create_light_map_texture<'l, T>(t_creator: &'l TextureCreator<WindowContext>, game: &Game, canvas: &mut Canvas<T>) -> Texture<'l> where T: RenderTarget {
-    let frame = player::get_light_frame();
+    let frame = get_light_frame(game);
     let mut light_map = utils::texture::create_texture_target(&t_creator, frame.width(), frame.height()).unwrap();
 
     canvas.with_texture_canvas(&mut light_map, |texture| render_light(&game, texture)).unwrap();
@@ -54,10 +52,10 @@ pub fn get_scroll_position(game: &Game) -> (i32, i32) {
     (frame.x() * tile::WIDTH as i32, frame.y() * tile::HEIGHT as i32)
 }
 
-pub fn render_light<T>(_game: &Game, canvas: &mut Canvas<T>) where T: RenderTarget {
-    let light_frame = player::get_light_frame();
-    let light_radius = Circle::new((light_frame.width() as f32 * 0.5) as i32, (light_frame.height() as f32 * 0.5) as i32, player::LIGHT_RADIUS);
-    let viewport = Rect::new(0, 0, light_frame.width() / tile::WIDTH + tile::WIDTH, light_frame.height() / tile::HEIGHT + tile::HEIGHT);
+pub fn render_light<T>(game: &Game, canvas: &mut Canvas<T>) where T: RenderTarget {
+    let light_frame = get_light_frame(game);
+    let light_radius = Circle::new((light_frame.width() / 2) as i32, (light_frame.height() / 2) as i32, player::LIGHT_RADIUS);
+    let viewport = Rect::new(0, 0, light_frame.width() + tile::WIDTH, light_frame.height() + tile::HEIGHT);
 
     for y in 0..viewport.height() {
         for x in 0..viewport.width() {
@@ -69,14 +67,14 @@ pub fn render_light<T>(_game: &Game, canvas: &mut Canvas<T>) where T: RenderTarg
 }
 
 pub fn get_light_frame(game: &Game) -> Rect {
-    let projected_frame = get_player_frame(game);
+    let unprojected_player_frame = get_player_frame(game);
     let light_frame = player::get_light_frame();    
-    
+
     Rect::new(
-        projected_frame.x() + (light_frame.width() as f32 * 0.5) as i32, 
-        projected_frame.y() + (light_frame.height() as f32 * 0.5) as i32, 
-        light_frame.width(), 
-        light_frame.height()
+        (light_frame.width() * tile::WIDTH / 2) as i32 - unprojected_player_frame.x(), 
+        (light_frame.height() * tile::HEIGHT / 2) as i32 - unprojected_player_frame.y(), 
+        light_frame.width() * tile::WIDTH, 
+        light_frame.height() * tile::HEIGHT
     )
 }
 
@@ -91,11 +89,11 @@ pub fn get_player_frame(game: &Game) -> Rect {
     Rect::new(unprojected_frame.x() * tile::WIDTH as i32, unprojected_frame.y() * tile::HEIGHT as i32, tile::WIDTH, tile::HEIGHT)
 }
 
-fn render_layer_in_viewport(viewport: Rect, columns: i32, render_cb: &mut FnMut(usize)) {
+fn render_layer_in_viewport(viewport: Rect, items_per_row: i32, render_cb: &mut FnMut(usize)) {
     for (i, x) in (viewport.x() .. viewport.width() as i32 + 1).enumerate() {
         render_cb(x as usize);
         for y in viewport.y() .. viewport.height() as i32 + 1 {
-            render_cb((i as i32 + y * columns as i32) as usize);
+            render_cb((i as i32 + y * items_per_row as i32) as usize);
         }
     }
 }
