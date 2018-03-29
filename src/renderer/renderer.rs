@@ -60,6 +60,7 @@ impl<'a> Renderer<'a> {
             }
 
             texture.copy(&self.td_renderer.get_map(), None, game.get_mini_map_frame()).unwrap();
+        
         }).unwrap();
 
         canvas.copy(&screen, None, window::get_canvas_frame()).unwrap();

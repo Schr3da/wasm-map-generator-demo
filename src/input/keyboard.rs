@@ -6,7 +6,7 @@ use sdl2::keyboard::{Keycode};
 use sdl2::event::{Event};
 use scenes::game::{Game};
 use renderer::renderer::{Renderer};
-use input::utils::{update_player_position, update_render_target};
+use input::utils::{update_scroll_frame, update_render_target};
 
 pub struct KeyboardControls{
     events: EventPump,
@@ -33,7 +33,7 @@ impl KeyboardControls{
             }
         }
 
-        update_player_position(self, renderer, game);
+        update_scroll_frame(self, renderer, game);
     }
 
     pub fn get_keys(&self) -> &HashMap<Keycode, bool>{

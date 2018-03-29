@@ -66,7 +66,8 @@ impl Entity for Player {
     }
 
     fn get_frame(&self) -> Rect {
-        self.frame
+        let f = self.frame;
+        Rect::new(f.x(), f.y(), f.width(), f.height())
     }
 
     fn set_frame(&mut self, f: Rect) {

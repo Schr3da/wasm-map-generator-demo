@@ -5,7 +5,7 @@ use entities::entity::{Entity};
 use entities::player::{Player};
 use entities::utils::{create_player_with_initial_position};
 use scenes::layer::{Layer};
-use renderer::utils::{set_initial_position_frame};
+use renderer::utils::{set_initial_scroll};
 use generator::map::{Map};
 use ui::minimap::{Minimap};
 use entities::tile::{Tile};
@@ -27,7 +27,7 @@ impl Game {
             frame: Rect::new(0, 0, 0, 0)
         };
 
-        set_initial_position_frame(&mut game);
+        set_initial_scroll(&mut game);
         game
     }
 
@@ -35,21 +35,16 @@ impl Game {
         &self.map.get_layers()
     }
 
-    pub fn set_position_frame(&mut self, frame: Rect) {
+    pub fn set_scroll_frame(&mut self, frame: Rect) {
         self.frame = frame;
-        self.set_player_position(frame.x(), frame.y());
     }
 
-    pub fn get_position_frame(&self) -> Rect {
+    pub fn get_scroll_frame(&self) -> Rect {
         self.frame
     }
 
     pub fn get_player(&self) -> &Player {
         &self.player
-    }
-
-    pub fn set_player_position(&mut self, x: i32, y: i32) {
-        self.player.set_position(x, y);
     }
 
     pub fn get_player_position(&self) -> (i32, i32) {
@@ -63,7 +58,7 @@ impl Game {
 
     pub fn get_map_frame(&self) -> Rect {
         let (width, height) = self.get_map_size();
-        let (px, py) = self.get_player_position();
+        let (px, py) = self.player.get_position();
         Rect::new(px, py, width, height)
     }
 

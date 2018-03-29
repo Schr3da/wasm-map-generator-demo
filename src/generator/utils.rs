@@ -32,16 +32,18 @@ pub fn create_surface(l: &mut Layer<Tile>, hm: &diamond_square::PixelMap<u8>) {
     }
 }
 
-pub fn create_vegetation(l: &mut Layer<Tile>) {
+pub fn create_vegetation<'a>(l: &'a mut Layer<Tile>) {
     //Initial interested tiles
-    let mut new_tiles: Vec<Box<Tile>> = l.get_entities().iter().filter(|e| e.is_walkable()).cloned().collect(); 
+    let mut new_tiles: Vec<Box<Tile>> = l.get_entities().iter().filter(|e| {
+        e.is_walkable()
+    }).cloned().collect(); 
     
     new_tiles.iter_mut().for_each(|e| {
-        e.set_background(Color::RGB(0, 255, 0));   
+//        e.set_background(Color::RGB(0, 255, 0));   
     });
 
     new_tiles.iter_mut().for_each(|e| {
-        e.set_background(Color::RGB(255, 0, 0));   
+//        e.set_background(Color::RGB(255, 0, 0));   
     });
 
     let to_modify = l.get_mut_entities().iter_mut().filter(|e| e.is_walkable());
