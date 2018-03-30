@@ -12,6 +12,7 @@ use utils;
 pub fn create_map_texture<'l, T>(t_creator: &'l TextureCreator<WindowContext>, game: &Game, canvas: &mut Canvas<T>) -> Texture<'l> where T: RenderTarget {
     let (mw, mh) = game.get_map_size();
     let mut map = utils::texture::create_texture_target(&t_creator, mw * tile::WIDTH, mh * tile::HEIGHT).unwrap();
+
     canvas.with_texture_canvas(&mut map, |texture| {
         for (_, layer) in game.get_map_layers().into_iter(){
             for e in layer.get_entities() {
