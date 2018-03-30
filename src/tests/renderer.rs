@@ -1,6 +1,5 @@
 use sdl2;
 use std::time::Instant;
-use std::process::{exit};
 use scenes::game::{Game};
 use utils::canvas;
 use renderer::{top_down_utils};
@@ -12,12 +11,12 @@ fn map_and_light_texture() {
     let texture_creator = canvas.texture_creator();
     let game = Game::new();
 
-    println!("Start {:?}\n", Instant::now());
+    let now = Instant::now();
     
     top_down_utils::create_map_texture(&texture_creator, &game, &mut canvas);
     top_down_utils::create_light_map_texture(&texture_creator, &game, &mut canvas);
     
-    println!("End {:?}\n\n", Instant::now());
+    println!("\nTest finished in {:?}s\n", now.elapsed().as_secs());
 }
 
 
