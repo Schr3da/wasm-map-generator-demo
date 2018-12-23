@@ -1,5 +1,5 @@
-# hackertron-eu-wasm-game-project
-Source code of Rust/WASM game development dev blog (http://www.hackertron.eu)
+# WASM SDL2 MAP
+Source code of Rust/WASM pet project
 
 # Current WebAssembly build 
 http://www.hackertron.eu/build/
