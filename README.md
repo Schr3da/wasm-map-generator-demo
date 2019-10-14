@@ -1,12 +1,7 @@
-# WASM SDL2 MAP
+# Wasm SDL2 map generator
 Source code of Rust/WASM pet project
 
-# Current WebAssembly build 
-http://www.hackertron.eu/build/
-
-# WebAssembly Build Instruction/Requirements
-
-A more detailed description is available under http://www.hackertron.eu (Build Instructions)
+# Wasm Build Instruction/Requirements
 
 * Proper workin emscripten environment
 * Use set_project_path.sh script to update required template variables in .cargo/config
